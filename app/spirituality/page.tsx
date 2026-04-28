@@ -14,14 +14,14 @@ import type { SpiritualLessonContent } from '@/lib/mock-data/spiritualContent'
 
 // ── Mock spiritual data ────────────────────────────────────────────
 const PRAYERS = [
-  { id: 'fajr',    label: 'Fajr',    window: '04:30 – lever', done: true,  doneAt: '05:47', inWindow: true },
-  { id: 'dhuhr',   label: 'Dhuhr',   window: '12:30 – 15:00', done: true,  doneAt: '13:12', inWindow: true },
+  { id: 'fajr',    label: 'Fajr',    window: '04:30 – lever',    done: false, doneAt: null, inWindow: false },
+  { id: 'dhuhr',   label: 'Dhuhr',   window: '12:30 – 15:00',   done: false, doneAt: null, inWindow: false },
   { id: 'asr',     label: 'Asr',     window: '15:30 – Maghrib', done: false, doneAt: null, inWindow: false },
-  { id: 'maghrib', label: 'Maghrib', window: 'Coucher – 1h',  done: false, doneAt: null, inWindow: false },
-  { id: 'isha',    label: 'Isha',    window: '20:00 – 04:00', done: false, doneAt: null, inWindow: false },
+  { id: 'maghrib', label: 'Maghrib', window: 'Coucher – 1h',    done: false, doneAt: null, inWindow: false },
+  { id: 'isha',    label: 'Isha',    window: '20:00 – 04:00',   done: false, doneAt: null, inWindow: false },
 ]
 
-const PRAYER_AVG = { fajr: 71, dhuhr: 86, asr: 57, maghrib: 86, isha: 71 }
+const PRAYER_AVG: Record<string, number> = { fajr: 0, dhuhr: 0, asr: 0, maghrib: 0, isha: 0 }
 
 const HADITHS = [
   { text: "Les actes les plus aimés d'Allah sont ceux accomplis de manière constante, même s'ils sont peu nombreux.", src: 'Boukhari & Muslim' },
@@ -37,7 +37,7 @@ const SPIRITUAL_ARCS = [
     description: 'Le Tawhid, les six piliers de la foi, le sens de la création.',
     status: 'active' as const, passScore: 70,
     lessonIds: ARC_LESSON_IDS[1],
-    preScore: 58, finalScore: undefined, finalAttempts: 0,
+    preScore: undefined, finalScore: undefined, finalAttempts: 0,
   },
   {
     num: 2, title: 'La Prière (Salah)', color: '#6BA4D4',
@@ -140,6 +140,17 @@ function PrayerTracker() {
 
 // ── Prayer stats 7d ────────────────────────────────────────────────
 function PrayerStats() {
+  const hasData = Object.values(PRAYER_AVG).some(v => v > 0)
+
+  if (!hasData) {
+    return (
+      <div className="mx-5 mb-3 bg-s1 border border-s3 rounded-2xl px-4 py-5 text-center">
+        <p className="text-xs text-t3 mb-1">Aucune donnée pour le moment</p>
+        <p className="text-[10px] text-t4">La régularité sera calculée après ta première semaine de suivi.</p>
+      </div>
+    )
+  }
+
   return (
     <div className="mx-5 mb-3 bg-s1 border border-s3 rounded-2xl px-4 py-4">
       <p className="text-[9px] text-t4 uppercase tracking-widest mb-3">Régularité 7 jours</p>
@@ -307,20 +318,13 @@ const HADITH_ARCHIVE = [
 
 // ── Page ──────────────────────────────────────────────────────────
 export default function SpiritualityPage() {
-  const {
-    completedSpiritLessons,
-    markSpiritLessonDone,
-    openQcm,
-  } = useStore()
+  const { completedSpiritLessons, markSpiritLessonDone, openQcm } = useStore()
 
   const [activeLesson, setActiveLesson] = useState<SpiritualLessonContent | null>(null)
 
-  const { spiritualScore, prayerAverage7d } = {
-    spiritualScore: 62,
-    prayerAverage7d: { fajr: 71, dhuhr: 86, asr: 57, maghrib: 86, isha: 71 } as Record<string, number>,
-  }
-
-  const avgFajr = prayerAverage7d.fajr
+  // No historical data yet — all zeroes until real tracking is implemented
+  const spiritualScore = 0
+  const avgFajr = PRAYER_AVG.fajr  // 0 until history is tracked
 
   return (
     <div className="min-h-screen bg-s0">
@@ -336,20 +340,20 @@ export default function SpiritualityPage() {
       <PageHeader
         title="Spiritualit\u00e9"
         subtitle="Aqidah \u00b7 Salah \u00b7 Akhlaq"
-        right={
+        right={spiritualScore > 0 ? (
           <div className="text-right">
             <div className="text-xl font-semibold text-gold">{spiritualScore}</div>
             <div className="text-[10px] text-t4">score</div>
           </div>
-        }
+        ) : undefined}
       />
 
       {/* Quick stats */}
       <div className="mx-5 mb-4 grid grid-cols-3 gap-2">
         {[
-          { label: 'Fajr 7j',     value: `${avgFajr}%`,                           color: avgFajr >= 70 ? '#5ACA9A' : '#C9A84C' },
-          { label: 'Cours lus',   value: `${completedSpiritLessons.length}`,       color: '#C9A84C' },
-          { label: 'Arc actuel',  value: '1/4',                                   color: '#C9A84C' },
+          { label: 'Fajr 7j',    value: avgFajr > 0 ? `${avgFajr}%` : '—', color: avgFajr >= 70 ? '#5ACA9A' : '#909090' },
+          { label: 'Cours lus',  value: `${completedSpiritLessons.length}`,  color: '#C9A84C' },
+          { label: 'Arc actuel', value: '1/4',                               color: '#C9A84C' },
         ].map(({ label, value, color }) => (
           <div key={label} className="bg-s1 border border-s3 rounded-xl px-3 py-3 text-center">
             <div className="text-lg font-semibold" style={{ color }}>{value}</div>

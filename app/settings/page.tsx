@@ -73,7 +73,9 @@ export default function SettingsPage() {
         </div>
         <Row icon="🔥" label="Streak actuel"         right={<span className="text-xs text-gold">{user.streak.current} jours</span>} />
         <Row icon="⚡" label="JOI disponibles"       desc="Jours Off Intelligents" right={<span className="text-xs text-t2">{user.joi.available}/{user.joi.max}</span>} />
-        <Row icon="📊" label="Score de fiabilité"    desc="SFU — interne" right={<span className="text-xs text-state-green">88/100</span>} />
+        <Row icon="🛡" label="Score de fiabilité" desc="SFU — disponible après 7 jours d'utilisation" right={
+          <span className="text-xs text-t4">—</span>
+        } />
         <Row icon="🔄" label="État système"          right={
           <Badge variant={user.systemState === 'green' ? 'success' : user.systemState === 'yellow' ? 'warning' : 'danger'}>
             {user.systemState === 'green' ? 'Performance' : user.systemState === 'yellow' ? 'Adaptatif' : 'Reprise'}

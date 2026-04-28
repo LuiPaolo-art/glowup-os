@@ -6,7 +6,6 @@ import { SportTimer }    from '@/components/sport/SportTimer'
 import { ExerciseList }  from '@/components/sport/ExerciseList'
 import { Pips }          from '@/components/ui/ProgressBar'
 import { useStore }      from '@/lib/store'
-import { MOCK_SPORT_WEEK } from '@/lib/mock-data'
 import { SPORT_PLAN }    from '@/types/sport'
 
 const TODAY_TYPE = SPORT_PLAN[new Date().getDay()]
@@ -14,39 +13,40 @@ const LABELS: Record<string, string> = { push: 'Push — Haut du corps', legs: '
 
 export default function SportPage() {
   const { timer, eval: ev, exercises, levelUp } = useStore()
-  const { done, planned, fullCount, avgDuration } = MOCK_SPORT_WEEK
 
-  const sessionDone = ev.submitted
+  const sessionDone   = ev.submitted
   const sessionActive = timer.running || timer.elapsed > 0
+
+  // Sport week stats — zeroed until real session history is implemented
+  const hasWeekData = false  // flip to true once session history exists
 
   return (
     <div className="min-h-screen bg-s0">
       <PageHeader
         title="Sport"
         subtitle="Calisthénie · Programme Push / Legs"
-        right={
-          <div className="flex items-center gap-3">
-            <div className="text-right">
-              <p className="text-xs font-semibold text-t1">{done}/{planned}</p>
-              <p className="text-[9px] text-t4">séances 7j</p>
-            </div>
-          </div>
-        }
       />
 
       {/* Week stats */}
-      <div className="mx-5 mb-4 grid grid-cols-3 gap-2">
-        {[
-          { label: 'Séances', value: `${done}/${planned}`, color: done >= planned ? '#5ACA9A' : '#C9A84C' },
-          { label: 'Complètes', value: `${fullCount}`, color: '#C9A84C' },
-          { label: 'Durée moy.', value: `${avgDuration}min`, color: '#6BA4D4' },
-        ].map(({ label, value, color }) => (
-          <div key={label} className="bg-s1 border border-s3 rounded-xl px-3 py-3 text-center">
-            <p className="text-lg font-semibold" style={{ color }}>{value}</p>
-            <p className="text-[9px] text-t4 mt-0.5">{label}</p>
-          </div>
-        ))}
-      </div>
+      {hasWeekData ? (
+        <div className="mx-5 mb-4 grid grid-cols-3 gap-2">
+          {[
+            { label: 'Séances',    value: '0/0', color: '#909090' },
+            { label: 'Complètes', value: '0',   color: '#909090' },
+            { label: 'Durée moy.', value: '—',  color: '#909090' },
+          ].map(({ label, value, color }) => (
+            <div key={label} className="bg-s1 border border-s3 rounded-xl px-3 py-3 text-center">
+              <p className="text-lg font-semibold" style={{ color }}>{value}</p>
+              <p className="text-[9px] text-t4 mt-0.5">{label}</p>
+            </div>
+          ))}
+        </div>
+      ) : (
+        <div className="mx-5 mb-4 bg-s1 border border-s3 rounded-xl px-4 py-3 text-center">
+          <p className="text-xs text-t3 mb-0.5">Aucune session enregistrée</p>
+          <p className="text-[10px] text-t4">Lance ta première séance pour démarrer le suivi.</p>
+        </div>
+      )}
 
       {/* Today plan */}
       <SectionLabel>Séance du jour</SectionLabel>

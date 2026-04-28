@@ -41,8 +41,8 @@ export const MOCK_ARCS: Arc[] = [
     lessons: [], finalAttempts: 0,
     unlockConditions: [
       { label: 'Arc 1 validé',         met: false },
-      { label: 'Score Sport ≥ 40',     met: true,  value: '68/40' },
-      { label: '8 séances réussies',   met: false, value: '5/8'   },
+      { label: 'Score Sport ≥ 40',     met: false },
+      { label: '8 séances réussies',   met: false },
     ],
   },
   {
@@ -53,7 +53,7 @@ export const MOCK_ARCS: Arc[] = [
     lessons: [], finalAttempts: 0,
     unlockConditions: [
       { label: 'Arc 1 validé',              met: false },
-      { label: 'Score Apprentissage ≥ 40', met: false, value: '36/40' },
+      { label: 'Score Apprentissage ≥ 40', met: false },
     ],
   },
 ]
@@ -71,8 +71,8 @@ export const MOCK_EXERCISES: Exercise[] = [
   },
   {
     id: 'diamant', name: 'Pompes diamant',
-    currentLevel: 1, maxLevel: 2,
-    sessionsAtLevel: 0, sessionsRequired: 7, canLevelUp: false,
+    currentLevel: 0, maxLevel: 2,
+    sessionsAtLevel: 0, sessionsRequired: 5, canLevelUp: false,
     levels: [
       { name: 'Pompes diamant',          sets: '3 × 10', tip: 'Mains en triangle sous le sternum' },
       { name: 'Pompes déclinées diamant', sets: '3 × 8', tip: 'Pieds surélevés, tension maximale' },
@@ -102,9 +102,9 @@ export const MOCK_EXERCISES: Exercise[] = [
 ]
 
 export const MOCK_SPORT_WEEK: SportWeek = {
-  planned: 4, done: 3, fullCount: 2, avgDuration: 58,
+  planned: 0, done: 0, fullCount: 0, avgDuration: 0,
 }
 
 export const MOCK_DOMAIN_SCORES: DomainScores = {
-  sport: 68, learning: 36, discipline: 71, constancy: 62, global: 62,
+  sport: 0, learning: 0, discipline: 0, constancy: 0, global: 0,
 }
