@@ -1,0 +1,16 @@
+[33mcd2108f[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m)[m final fix qcm arc import
+[33mf4595dc[m disable eslint entity errors
+[33me212d8c[m step 2 fix prayers and non negotiables
+[33m86728c5[m restore full spirituality page with prayer type fix
+[33m68fb8d3[m fix doneAt type FINAL
+[33mea87949[m final fix qcm arc import
+[33m5491c6a[m disable eslint entity errors
+[33mc80d005[m step 2 fix prayers and non negotiables
+[33mcb293b7[m fix spirituality prayer type
+[33mcf825fd[m fix missing qcm arc import
+[33mac646ac[m disable blocking eslint rules
+[33m0f95f11[m fully clean initial user state
+[33m7c9b8a5[m clean initial user state
+[33m4e90877[m fix progression qcm import
+[33m519335c[m ignore eslint during vercel build
+[33mf0fb60a[m first version glowup os
